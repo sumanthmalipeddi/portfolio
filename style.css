@@ -161,6 +161,7 @@ a:focus-visible {
 .marquee-track {
   display: inline-block;
   animation: marquee 36s linear infinite;
+  will-change: transform;
 }
 
 .marquee span {
@@ -294,6 +295,7 @@ section { padding-top: 3.5rem; padding-bottom: 3rem; }
   pointer-events: none;
   user-select: none;
   z-index: 0;
+  transform: translateZ(0);
 }
 
 .sec-head {
@@ -331,8 +333,10 @@ h2 {
   border-bottom: 2px solid var(--line);
   text-decoration: none;
   color: var(--fg);
-  transition: background 150ms var(--ease-out), color 150ms var(--ease-out), padding 150ms var(--ease-out);
+  transition: background 150ms var(--ease-out), color 150ms var(--ease-out);
 }
+
+.row-main, .row-no { transition: transform 150ms var(--ease-out); }
 
 @media (min-width: 760px) {
   .row { grid-template-columns: 3.5rem 1fr 14rem 2.5rem; }
@@ -389,8 +393,9 @@ h2 {
   .row:hover {
     background: var(--fg);
     color: var(--bg);
-    padding-left: 1rem;
   }
+  .row:hover .row-main,
+  .row:hover .row-no { transform: translateX(0.5rem); }
   .row:hover .row-desc,
   .row:hover .row-no,
   .row:hover .row-meta { color: var(--bg); opacity: 0.75; }
