@@ -38,7 +38,12 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* Native fallback; Lenis takes over when JS runs (and sets scroll-behavior auto) */
 html { scroll-behavior: smooth; }
+
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
 
 ::selection { background: var(--accent); color: var(--on-accent); }
 
