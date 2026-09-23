@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zero-loss data platform — Sumanth Malipeddi</title>
+  <meta name="description" content="Case study: 811,548 production records loaded with zero loss through a cursor-killing load balancer — staging gates, count reconciliation, atomic swaps.">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="container">
+    <nav aria-label="Main">
+      <a class="brand" href="../index.html" style="text-decoration:none;color:inherit">SM</a>
+      <div class="nav-links">
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container case-body">
+    <div class="case">
+      <p class="kicker">Case study · Work at GetMySaas</p>
+      <h1>Zero-loss data platform</h1>
+      <p class="stack">PostgreSQL · MongoDB · dbt · Airflow (Cosmos) · Docker Compose · Python</p>
+    </div>
+
+    <section>
+      <h2>Problem</h2>
+      <p>
+        A B2B SaaS startup needed its market intelligence — hundreds of thousands of
+        person and company records across six heterogeneous sources — unified into
+        marts the business could actually act on. The hard constraint: the production
+        MongoDB sits behind a load balancer that kills long-lived cursors, so a naive
+        full read silently drops records mid-stream. In this domain a silently
+        incomplete load is worse than a failed one.
+      </p>
+    </section>
+
+    <section>
+      <h2>Build</h2>
+      <p>
+        I designed the load path around the failure mode instead of hoping past it:
+        chunked <code>_id</code> pagination with retry (no cursor lives long enough to be
+        killed), landing into staging tables, count-reconciliation gates that refuse to
+        promote a load that doesn't tie out, and an atomic content swap into the live
+        tables — content-swap rather than table rename, because Postgres views bind by OID.
+      </p>
+      <p>
+        Downstream, a dbt framework transforms the raw layer into golden records:
+        12+ models across staging/intermediate/marts, 32 schema and custom tests,
+        SCD Type 2 snapshots, and seed-driven configuration — orchestrated by a
+        9-task Airflow DAG (Cosmos) in a 6-service Docker Compose deployment.
+        Entity resolution scores match candidates across the six sources with a
+        5-dimension confidence model and keeps 14 columns of source-attribution
+        provenance, so every merged fact can be traced back to where it came from.
+      </p>
+      <p>
+        The schema is deliberately honest: no synthetic identity keys, and
+        <code>is_deliverable</code> stays FALSE until independently verified. A wrong
+        guess corrupts deduplication silently; a NULL with a status column never lies.
+      </p>
+    </section>
+
+    <section>
+      <h2>Outcomes</h2>
+      <ul class="outcomes">
+        <li><span class="num">811,548</span> person records loaded from production with zero record loss</li>
+        <li><span class="num">792,816</span> contact records in the outreach mart · 48,729 companies in the dimension</li>
+        <li><span class="num">423,163</span> products classified against a 166-category taxonomy I own (architect-approved v3.6.0)</li>
+        <li><span class="num">10/10</span> dbt tests passing on the marts · 32 tests across the framework</li>
+      </ul>
+    </section>
+
+    <a class="back" href="../index.html">← Back</a>
+  </main>
+
+  <footer class="container">
+    <p>© 2026 Sumanth Malipeddi</p>
+  </footer>
+</body>
+</html>

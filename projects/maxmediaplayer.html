@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MaxMediaPlayer — Sumanth Malipeddi</title>
+  <meta name="description" content="Case study: native iOS video player live on the App Store in 175 countries — pure-Swift Matroska demuxer, hardware decoding, 327 unit tests.">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="container">
+    <nav aria-label="Main">
+      <a class="brand" href="../index.html" style="text-decoration:none;color:inherit">SM</a>
+      <div class="nav-links">
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container case-body">
+    <div class="case">
+      <p class="kicker">Case study · Solo product, live on the App Store</p>
+      <h1>MaxMediaPlayer</h1>
+      <p class="stack">Swift 6 · VideoToolbox · StoreKit 2 · Tuist monorepo · <a href="https://apps.apple.com/in/app/max-media-player-mkv-video/id6780991562" rel="noopener noreferrer">On the App Store ↗</a></p>
+    </div>
+
+    <section>
+      <h2>Problem</h2>
+      <p>
+        iOS has no first-class playback for Matroska/WebM files — the containers most
+        high-quality media actually ships in. Existing players wrap decades-old C
+        libraries. I wanted to know whether one engineer could build the whole thing
+        natively: demuxer, streaming engine, store, release pipeline.
+      </p>
+    </section>
+
+    <section>
+      <h2>Build</h2>
+      <p>
+        The core is a pure-Swift Matroska/WebM (EBML) demuxer written from scratch,
+        feeding a bounded-memory streaming engine — memory-mapped reads pushed straight
+        into Apple's hardware decoders (AV1/HEVC/H.264 via VideoToolbox). Seeking is
+        O(1) via the Cues index, so a 60&nbsp;GB file starts instantly and scrubs like a
+        local MP4.
+      </p>
+      <p>
+        The release operation is itself engineered: the entire App Store lifecycle runs
+        through the App Store Connect API as a CI-style pipeline — subscription and IAP
+        creation across 175 territories, localized listings in 5 languages, and review
+        submission. Passed App Review including LGPL-2.1 compliance.
+      </p>
+      <p>
+        The pure-logic core carries 327 unit tests running on macOS and Linux CI under
+        Swift 6 strict concurrency, inside a Tuist-managed monorepo of ~20 SwiftPM
+        packages. Nine beta builds in three weeks closed out field-reported issues.
+      </p>
+    </section>
+
+    <section>
+      <h2>Outcomes</h2>
+      <ul class="outcomes">
+        <li><span class="num">175 countries</span> live on the App Store, with localized listings in 5 languages</li>
+        <li><span class="num">60 GB files</span> play with instant start and O(1) seeking on hardware decoders</li>
+        <li><span class="num">327 tests</span> on the pure-logic core, macOS + Linux CI, Swift 6 strict concurrency</li>
+        <li><span class="num">9 builds / 3 weeks</span> beta-cycle turnaround on field-reported issues</li>
+      </ul>
+    </section>
+
+    <a class="back" href="../index.html">← Back</a>
+  </main>
+
+  <footer class="container">
+    <p>© 2026 Sumanth Malipeddi</p>
+  </footer>
+</body>
+</html>

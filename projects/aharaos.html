@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AharaOS — Sumanth Malipeddi</title>
+  <meta name="description" content="Case study: condition-aware health OS — 120+ REST endpoints, multimodal lab-report extraction, multi-provider LLM failover validated in a real outage.">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="container">
+    <nav aria-label="Main">
+      <a class="brand" href="../index.html" style="text-decoration:none;color:inherit">SM</a>
+      <div class="nav-links">
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container case-body">
+    <div class="case">
+      <p class="kicker">Case study · Solo product, deployed on Fly.io</p>
+      <h1>AharaOS — condition-aware health OS</h1>
+      <p class="stack">FastAPI · Supabase · Gemini + Claude · SwiftUI · <a href="https://aharaos.com/" rel="noopener noreferrer">aharaos.com ↗</a></p>
+    </div>
+
+    <section>
+      <h2>Problem</h2>
+      <p>
+        Generic nutrition apps rank food by macros and ignore the thing that matters
+        most: medical conditions. A protocol that's great for one user is actively
+        harmful for another. The system had to treat condition filters as hard gates —
+        applied before any macro ranking — and extract real markers from the lab
+        reports people actually have: messy PDFs.
+      </p>
+    </section>
+
+    <section>
+      <h2>Build</h2>
+      <p>
+        An AI health platform of 120+ REST endpoints over 40 SQL migrations, with
+        row-level security on all 19 tables. Multimodal LLM extraction pulls 92 markers
+        from lab-report PDFs; nutrition protocols are generated only after
+        condition filters gate the candidate set.
+      </p>
+      <p>
+        The LLM layer is engineered for failure: Pydantic-schema structured outputs
+        with automatic Gemini→Claude failover — validated during a real provider
+        outage, not a drill — per-user cost caps backed by a DB-driven pricing ledger,
+        and defense-in-depth security (SSRF guard, CSP with nonces, rate limiting)
+        behind 6 CI gates.
+      </p>
+    </section>
+
+    <section>
+      <h2>Outcomes</h2>
+      <ul class="outcomes">
+        <li><span class="num">120+ endpoints</span> · 40 migrations · RLS on all 19 tables</li>
+        <li><span class="num">92 markers</span> extracted per lab report via multimodal LLM parsing</li>
+        <li><span class="num">Zero downtime</span> through a real LLM-provider outage via automatic failover</li>
+        <li><span class="num">6 CI gates</span> enforcing security and correctness on every change</li>
+      </ul>
+    </section>
+
+    <a class="back" href="../index.html">← Back</a>
+  </main>
+
+  <footer class="container">
+    <p>© 2026 Sumanth Malipeddi</p>
+  </footer>
+</body>
+</html>

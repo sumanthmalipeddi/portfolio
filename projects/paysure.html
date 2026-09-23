@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PaySure — Sumanth Malipeddi</title>
+  <meta name="description" content="Case study: payment reconciliation for gig workers — integer-paise arithmetic, India's 26th–25th pay cycles, TDS-aware verification.">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="container">
+    <nav aria-label="Main">
+      <a class="brand" href="../index.html" style="text-decoration:none;color:inherit">SM</a>
+      <div class="nav-links">
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container case-body">
+    <div class="case">
+      <p class="kicker">Case study · Solo product, spec to ship</p>
+      <h1>PaySure — payment reconciliation for gig workers</h1>
+      <p class="stack">Next.js 16 · TypeScript · SQLite/Drizzle · OAuth 2.0 · <a href="https://github.com/sumanthmalipeddi/paysure" rel="noopener noreferrer">Source on GitHub ↗</a></p>
+    </div>
+
+    <section>
+      <h2>Problem</h2>
+      <p>
+        Gig workers in India get paid against hours their employers compute — and have
+        no practical way to verify the math, the pay-period boundaries, or the TDS
+        deducted. Underpayment hides in timezone edges and rounding. I wrote the
+        product spec myself and built to it.
+      </p>
+    </section>
+
+    <section>
+      <h2>Build</h2>
+      <p>
+        The app converts Google Calendar events into employer-format payout statements
+        and reconciles them against actual payments — flagging underpaid hours and TDS
+        deductions. 12 routes, 59 unit tests, OAuth 2.0, PDF/CSV export.
+      </p>
+      <p>
+        The correctness core is fintech-grade: a timezone-correct pay-period engine for
+        India's 26th–25th cycles with explicit UTC/IST boundary tests, integer-paise
+        money arithmetic (no floats near money, ever), three-bucket reconciliation, and
+        TDS-aware (§194J) verification against a Form 26AS ledger.
+      </p>
+      <p>
+        Security was a design input, not a patch: OAuth with read-only scope,
+        AES-256-GCM-encrypted refresh tokens, CSRF state validation, and calendar
+        descriptions deliberately never stored. A from-scratch ICS parser with RRULE
+        expansion serves as the no-OAuth fallback.
+      </p>
+    </section>
+
+    <section>
+      <h2>Outcomes</h2>
+      <ul class="outcomes">
+        <li><span class="num">59 tests</span> including UTC/IST pay-period boundary cases</li>
+        <li><span class="num">Integer paise</span> end-to-end — zero floating-point money paths</li>
+        <li><span class="num">§194J TDS</span> verification reconciled against Form 26AS</li>
+        <li><span class="num">Read-only OAuth</span> with AES-256-GCM token encryption; descriptions never stored</li>
+      </ul>
+    </section>
+
+    <a class="back" href="../index.html">← Back</a>
+  </main>
+
+  <footer class="container">
+    <p>© 2026 Sumanth Malipeddi</p>
+  </footer>
+</body>
+</html>

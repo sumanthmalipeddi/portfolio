@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The 60-second stall: a 557× AWS fix — Sumanth Malipeddi</title>
+  <meta name="description" content="Every AWS SDK call on a production box stalled exactly 60 seconds. Twice misdiagnosed. The root cause was IPv6, and the fix was one line.">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="container">
+    <nav aria-label="Main">
+      <a class="brand" href="../index.html" style="text-decoration:none;color:inherit">SM</a>
+      <div class="nav-links">
+        <a href="../index.html#writing">Writing</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container case-body">
+    <div class="case">
+      <p class="kicker">Writing · Debugging story</p>
+      <h1>The 60-second stall: a 557× AWS fix</h1>
+      <p class="stack">EC2 · boto3 · DNS · IPv6</p>
+    </div>
+
+    <section>
+      <h2>The symptom</h2>
+      <p>
+        Every AWS SDK call on a production box stalled almost exactly 60 seconds.
+        An 889&nbsp;KB S3 upload took 481 seconds. <code>sts get-caller-identity</code> —
+        a call that returns a few hundred bytes — took 61. The box had been
+        misdiagnosed twice before I got to it, because <code>curl</code> against the same
+        endpoints looked completely healthy.
+      </p>
+    </section>
+
+    <section>
+      <h2>The diagnosis</h2>
+      <p>
+        The number was too consistent to be bandwidth. Three timed runs repeated to
+        within 45 milliseconds — real network degradation doesn't do that. A delay that
+        reproducible is a fixed timeout somewhere, and the job was to find which one.
+      </p>
+      <p>
+        The instance advertised an IPv6 default route with dead egress. Python resolves
+        AAAA records first, attempts IPv6, and waits out the full connection timeout
+        before falling back to IPv4. <code>curl</code> implements happy-eyeballs — it
+        races both address families and takes whichever connects — which is exactly why
+        it looked fine the whole time, and exactly why the box had been misdiagnosed twice.
+      </p>
+    </section>
+
+    <section>
+      <h2>The fix</h2>
+      <p>
+        One line in <code>/etc/gai.conf</code> to prefer IPv4 address resolution.
+        A colleague had proposed a VPC-endpoint change as the fix; I tested it and
+        disproved it by measurement before it shipped — the endpoint wasn't the problem,
+        the resolver order was.
+      </p>
+      <ul class="outcomes">
+        <li><span class="num">481s → 0.86s</span> S3 upload (889 KB) — 557×</li>
+        <li><span class="num">61s → 0.74s</span> sts get-caller-identity — 82×</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>The lesson</h2>
+      <p>
+        A repeatable delay is a timeout, not a slow network. And two tools disagreeing
+        about the same endpoint isn't noise — it's the diagnosis: find what one does
+        that the other doesn't, and the bug is usually living in the difference.
+      </p>
+    </section>
+
+    <a class="back" href="../index.html">← Back</a>
+  </main>
+
+  <footer class="container">
+    <p>© 2026 Sumanth Malipeddi</p>
+  </footer>
+</body>
+</html>
