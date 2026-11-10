@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MaxMediaPlayer — Sumanth Malipeddi</title>
-  <meta name="description" content="Case study: native iOS video player live on the App Store in 175 countries — pure-Swift Matroska demuxer, hardware decoding, 327 unit tests.">
+  <title>MaxMediaPlayer | Sumanth Malipeddi</title>
+  <meta name="description" content="Case study: native iOS video player live on the App Store in 175 countries: pure-Swift Matroska demuxer, hardware decoding, 327 unit tests.">
   <link rel="canonical" href="https://sumanthmalipeddi.com/projects/maxmediaplayer.html">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
@@ -34,7 +34,7 @@
     <section>
       <h2>Problem</h2>
       <p>
-        iOS has no first-class playback for Matroska/WebM files — the containers most
+        iOS has no first-class playback for Matroska/WebM files, the containers most
         high-quality media actually ships in. Existing players wrap decades-old C
         libraries. I wanted to know whether one engineer could build the whole thing
         natively: demuxer, streaming engine, store, release pipeline.
@@ -45,14 +45,14 @@
       <h2>Build</h2>
       <p>
         The core is a pure-Swift Matroska/WebM (EBML) demuxer written from scratch,
-        feeding a bounded-memory streaming engine — memory-mapped reads pushed straight
+        feeding a bounded-memory streaming engine, with memory-mapped reads pushed straight
         into Apple's hardware decoders (AV1/HEVC/H.264 via VideoToolbox). Seeking is
         O(1) via the Cues index, so a 60&nbsp;GB file starts instantly and scrubs like a
         local MP4.
       </p>
       <p>
         The release operation is itself engineered: the entire App Store lifecycle runs
-        through the App Store Connect API as a CI-style pipeline — subscription and IAP
+        through the App Store Connect API as a CI-style pipeline: subscription and IAP
         creation across 175 territories, localized listings in 5 languages, and review
         submission. Passed App Review including LGPL-2.1 compliance.
       </p>

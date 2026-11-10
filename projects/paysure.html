@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PaySure — Sumanth Malipeddi</title>
-  <meta name="description" content="Case study: payment reconciliation for gig workers — integer-paise arithmetic, India's 26th–25th pay cycles, TDS-aware verification.">
+  <title>PaySure | Sumanth Malipeddi</title>
+  <meta name="description" content="Case study: payment reconciliation for gig workers: integer-paise arithmetic, India's 26th–25th pay cycles, TDS-aware verification.">
   <link rel="canonical" href="https://sumanthmalipeddi.com/projects/paysure.html">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
@@ -27,14 +27,14 @@
   <main class="container case-body">
     <div class="case">
       <p class="kicker">Case study · Solo product, spec to ship</p>
-      <h1>PaySure — payment reconciliation for gig workers</h1>
+      <h1>PaySure: payment reconciliation for gig workers</h1>
       <p class="stack">Next.js 16 · TypeScript · SQLite/Drizzle · OAuth 2.0 · <a href="https://github.com/sumanthmalipeddi/paysure" rel="noopener noreferrer">Source on GitHub ↗</a></p>
     </div>
 
     <section>
       <h2>Problem</h2>
       <p>
-        Gig workers in India get paid against hours their employers compute — and have
+        Gig workers in India get paid against hours their employers compute, and have
         no practical way to verify the math, the pay-period boundaries, or the TDS
         deducted. Underpayment hides in timezone edges and rounding. I wrote the
         product spec myself and built to it.
@@ -45,7 +45,7 @@
       <h2>Build</h2>
       <p>
         The app converts Google Calendar events into employer-format payout statements
-        and reconciles them against actual payments — flagging underpaid hours and TDS
+        and reconciles them against actual payments, flagging underpaid hours and TDS
         deductions. 12 routes, 59 unit tests, OAuth 2.0, PDF/CSV export.
       </p>
       <p>
@@ -66,7 +66,7 @@
       <h2>Outcomes</h2>
       <ul class="outcomes">
         <li><span class="num">59 tests</span> including UTC/IST pay-period boundary cases</li>
-        <li><span class="num">Integer paise</span> end-to-end — zero floating-point money paths</li>
+        <li><span class="num">Integer paise</span> end-to-end, zero floating-point money paths</li>
         <li><span class="num">§194J TDS</span> verification reconciled against Form 26AS</li>
         <li><span class="num">Read-only OAuth</span> with AES-256-GCM token encryption; descriptions never stored</li>
       </ul>

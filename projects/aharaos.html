@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AharaOS — Sumanth Malipeddi</title>
-  <meta name="description" content="Case study: condition-aware health OS — 120+ REST endpoints, multimodal lab-report extraction, multi-provider LLM failover validated in a real outage.">
+  <title>AharaOS | Sumanth Malipeddi</title>
+  <meta name="description" content="Case study: condition-aware health OS: 120+ REST endpoints, multimodal lab-report extraction, multi-provider LLM failover validated in a real outage.">
   <link rel="canonical" href="https://sumanthmalipeddi.com/projects/aharaos.html">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
@@ -27,7 +27,7 @@
   <main class="container case-body">
     <div class="case">
       <p class="kicker">Case study · Solo product, deployed on Fly.io</p>
-      <h1>AharaOS — condition-aware health OS</h1>
+      <h1>AharaOS: condition-aware health OS</h1>
       <p class="stack">FastAPI · Supabase · Gemini + Claude · SwiftUI · <a href="https://aharaos.com/" rel="noopener noreferrer">aharaos.com ↗</a></p>
     </div>
 
@@ -36,8 +36,8 @@
       <p>
         Generic nutrition apps rank food by macros and ignore the thing that matters
         most: medical conditions. A protocol that's great for one user is actively
-        harmful for another. The system had to treat condition filters as hard gates —
-        applied before any macro ranking — and extract real markers from the lab
+        harmful for another. The system had to treat condition filters as hard gates,
+        applied before any macro ranking, and extract real markers from the lab
         reports people actually have: messy PDFs.
       </p>
     </section>
@@ -52,8 +52,8 @@
       </p>
       <p>
         The LLM layer is engineered for failure: Pydantic-schema structured outputs
-        with automatic Gemini→Claude failover — validated during a real provider
-        outage, not a drill — per-user cost caps backed by a DB-driven pricing ledger,
+        with automatic Gemini→Claude failover (validated during a real provider
+        outage, not a drill), per-user cost caps backed by a DB-driven pricing ledger,
         and defense-in-depth security (SSRF guard, CSP with nonces, rate limiting)
         behind 6 CI gates.
       </p>

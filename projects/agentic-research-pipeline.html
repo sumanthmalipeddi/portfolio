@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agentic research pipeline | Sumanth Malipeddi</title>
+  <meta name="description" content="Case study: a custom MCP server over a Postgres work queue driving 4,856 headless Grok agent sessions to match 219,021 vendors to their data-platform profiles.">
+  <link rel="canonical" href="https://sumanthmalipeddi.com/projects/agentic-research-pipeline.html">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../js/lenis.min.js" defer></script>
+  <script src="../js/main.js" defer></script>
+</head>
+<body>
+  <header class="container">
+    <nav aria-label="Main">
+      <a class="brand" href="../index.html" style="text-decoration:none;color:inherit">SM</a>
+      <div class="nav-links">
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container case-body">
+    <div class="case">
+      <p class="kicker">Case study · Work at GetMySaas</p>
+      <h1>Agentic research pipeline</h1>
+      <p class="stack">Python · MCP (FastMCP) · Grok agents · PostgreSQL · AWS EC2 · S3</p>
+    </div>
+
+    <section>
+      <h2>Problem</h2>
+      <p>
+        We had 219,021 software vendors and needed each one's profile page on five
+        company-data platforms. That is far too many to do by hand, and plain search
+        gets it wrong in quiet ways: company names collide, domains change, and a
+        wrong link is worse than no link because it passes every row count.
+      </p>
+    </section>
+
+    <section>
+      <h2>Build</h2>
+      <p>
+        I wrote a custom MCP server in Python (FastMCP over HTTP) that gives an LLM
+        agent exactly three tools: get the next batch, submit results, and check the
+        queue. Behind it sits a Postgres work queue. Claims are time-limited leases,
+        so if an agent dies its vendors simply go back in the queue. Results are
+        append-only and the latest answer per vendor wins.
+      </p>
+      <p>
+        The agent gets a least-privilege database role. It can claim work and append
+        results, and nothing else: no updates, no deletes, no DDL, no reads outside its
+        own schema. A test proves it. The server also validates every answer before
+        storing it. The URL has to be a real profile URL for that platform and has to
+        come with evidence (a domain or name match). Anything that fails goes back to
+        the agent with the reason.
+      </p>
+      <p>
+        Each headless Grok session starts fresh and takes 25 vendors. I tried 50 first,
+        and most of the tokens went into re-reading earlier results. Measuring showed
+        that context growth, not the number of searches, was what drove cost. Sessions
+        run with a locked-down tool policy: only the MCP tools and web search, with
+        sub-agents off. The obvious flag for that did not actually work in headless
+        mode, which I only found by measuring. Every session writes its token count
+        and cost to the database, and an hourly alert reports progress, ETA and stalls.
+      </p>
+      <p>
+        Alongside the agents, the same queue feeds six search APIs, which I compared
+        head to head with per-key yield tracking.
+      </p>
+    </section>
+
+    <section>
+      <h2>What I learned</h2>
+      <p>
+        An agent's answer is a claim, not a fact. When I fetched the links from the
+        first batch, 20 to 44% of them were wrong. Since then every link is checked by
+        fetching the page itself before anything downstream trusts it.
+      </p>
+    </section>
+
+    <section>
+      <h2>Outcomes</h2>
+      <ul class="outcomes">
+        <li><span class="num">4,856</span> agent sessions · 153,304 vendor submissions · 2.2B tokens, with cost tracked per session</li>
+        <li><span class="num">95,089</span> vendors (43.4%) matched to at least one profile, 259,889 links in total</li>
+        <li><span class="num">100%</span> of 219,021 vendors searched at least once (403,732 search results)</li>
+        <li><span class="num">15,289</span> vendors got their first link from the second pass alone</li>
+      </ul>
+    </section>
+
+    <a class="back" href="../index.html">← Back</a>
+  </main>
+
+  <footer class="container">
+    <p>© 2026 Sumanth Malipeddi</p>
+  </footer>
+</body>
+</html>
