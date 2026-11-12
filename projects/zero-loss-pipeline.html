@@ -28,7 +28,7 @@
     <div class="case">
       <p class="kicker">Case study · Work at GetMySaas</p>
       <h1>Zero-loss data platform</h1>
-      <p class="stack">PostgreSQL · MongoDB · dbt · Airflow (Cosmos) · Docker Compose · Python</p>
+      <p class="stack">PostgreSQL · MongoDB · dbt · Docker Compose · Python</p>
     </div>
 
     <section>
@@ -55,8 +55,8 @@
       <p>
         Downstream, a dbt framework transforms the raw layer into golden records:
         12+ models across staging/intermediate/marts, 32 schema and custom tests,
-        SCD Type 2 snapshots, and seed-driven configuration, orchestrated by a
-        9-task Airflow DAG (Cosmos) in a 6-service Docker Compose deployment.
+        SCD Type 2 snapshots, and seed-driven configuration, deployed in a
+        6-service Docker Compose stack, with Airflow orchestration via Cosmos in progress.
         Entity resolution scores match candidates across the six sources with a
         5-dimension confidence model and keeps 14 columns of source-attribution
         provenance, so every merged fact can be traced back to where it came from.
